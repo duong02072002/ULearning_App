@@ -7,7 +7,8 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       elevation: 0,
       centerTitle: true,
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white,
+      iconTheme: IconThemeData(color: AppColors.primaryText),
     ),
   );
 }

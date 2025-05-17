@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_ulearning_app/common/routes/routes.dart';
 import 'package:flutter_ulearning_app/common/utils/app_styles.dart';
-import 'package:flutter_ulearning_app/page/sign_in/sign_in.dart';
-import 'package:flutter_ulearning_app/page/welcome/welcome.dart';
 
-void main() {
+import 'global.dart';
+
+Future<void> main() async {
+  await Global.init();
   runApp(const ProviderScope(child: MyApp()));
 }
+
+final GlobalKey<NavigatorState> navKey = GlobalKey<NavigatorState>();
+
+// var routesMap = {
+//   "/": (context) => Welcome(),
+//   "/signIn": (context) => SignIn(),
+//   "/register": (context) => SignUp(),
+//   "/application": (context) => Application(),
+// };
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -15,10 +26,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navKey,
       title: 'Flutter Demo',
       theme: AppTheme.appThemeData,
       initialRoute: "/",
-      routes: {"/": (context) => Welcome(), "/signIn": (context) => SignIn()},
+      //routes: routesMap,
+      onGenerateRoute: AppPages.generateRouteSettings,
       //home: Welcome(), // initial routine "/"
     );
   }
@@ -60,25 +73,15 @@ class MyHomePage extends ConsumerWidget {
           FloatingActionButton(
             heroTag: "one",
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const SecondPage(),
-                ),
-              );
-              //ref.read(appCount.notifier).state++;
-              // count++;
-              // print(count.toString());
+              navRoute(context);
             },
             tooltip: 'Increment',
             child: const Icon(Icons.arrow_right_rounded),
           ),
           FloatingActionButton(
             heroTag: "two",
-            onPressed: () {
-              ref.read(appCount.notifier).state++;
-              // count++;
-              // print(count.toString());
-            },
+            onPressed: () => ref.read(appCount.notifier).state++,
+            // onPressed:()=> myFunc(),
             tooltip: 'Increment',
             child: const Icon(Icons.add),
           ),
@@ -86,6 +89,16 @@ class MyHomePage extends ConsumerWidget {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+void myFunc() {
+  print("object");
+}
+
+void navRoute(BuildContext context) {
+  Navigator.of(context).push(
+    MaterialPageRoute(builder: (BuildContext context) => const SecondPage()),
+  );
 }
 
 class SecondPage extends ConsumerWidget {

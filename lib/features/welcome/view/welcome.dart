@@ -1,9 +1,10 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_ulearning_app/common/utils/image_res.dart';
 import 'package:flutter_ulearning_app/common/widgets/text_widgets.dart';
-import 'package:flutter_ulearning_app/page/welcome/notifier/welcome_notifier.dart';
-import 'package:flutter_ulearning_app/page/welcome/widgets.dart';
+import 'package:flutter_ulearning_app/features/welcome/provider/welcome_notifier.dart';
+import 'package:flutter_ulearning_app/features/welcome/view/widgets/widgets.dart';
 
 //final indexProvider = StateProvider<int>((ref) => 0);
 
@@ -39,30 +40,30 @@ class Welcome extends ConsumerWidget {
                   scrollDirection: Axis.horizontal,
                   children: [
                     //first page
-                    appOnboardingPage(
-                      _controller,
-                      context,
-                      imagePath: "assets/images/reading.png",
+                    AppOnboardingPage(
+                      controller: _controller,
+                      context: context,
+                      imagePath: ImageRes.reading,
                       title: "First see learning",
                       subTitle:
                           "Forget about the paper, now learning all in one place",
                       index: 1,
                     ),
                     //second page
-                    appOnboardingPage(
-                      _controller,
-                      context,
-                      imagePath: "assets/images/man.png",
+                    AppOnboardingPage(
+                      controller: _controller,
+                      context: context,
+                      imagePath: ImageRes.man,
                       title: "Connect With Everyone",
                       subTitle:
                           "Alway Keep in touch with your tutor and friend. Let's get connected",
                       index: 2,
                     ),
                     //three page
-                    appOnboardingPage(
-                      _controller,
-                      context,
-                      imagePath: "assets/images/boy.png",
+                    AppOnboardingPage(
+                      controller: _controller,
+                      context: context,
+                      imagePath: ImageRes.boy,
                       title: "Always Fascingated Learning",
                       subTitle:
                           "Anywhere, anytime. The time is at your discretion. So study wherever you can",
