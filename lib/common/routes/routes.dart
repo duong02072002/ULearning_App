@@ -1,7 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ulearning_app/common/routes/app_routes_names.dart';
+import 'package:flutter_ulearning_app/features/author_page/view/author_page.dart';
+import 'package:flutter_ulearning_app/features/buy_course/view/buy_course.dart';
+import 'package:flutter_ulearning_app/features/chat/view/chat_page.dart';
+import 'package:flutter_ulearning_app/features/course_detail/view/course_detail.dart';
 import 'package:flutter_ulearning_app/features/home/view/home.dart';
+import 'package:flutter_ulearning_app/features/lesson_detail/view/lesson_detail.dart';
+import 'package:flutter_ulearning_app/features/courses_bought/view/courses_bought.dart';
+import 'package:flutter_ulearning_app/features/profile/settings/widget/settings.dart';
 import 'package:flutter_ulearning_app/global.dart';
 import 'package:flutter_ulearning_app/features/application/view/application.dart';
 import 'package:flutter_ulearning_app/features/sign_in/view/sign_in.dart';
@@ -16,6 +23,22 @@ class AppPages {
       RouteEntity(path: AppRoutesNames.REGISTER, page: SignUp()),
       RouteEntity(path: AppRoutesNames.APPLICATION, page: Application()),
       RouteEntity(path: AppRoutesNames.HOME, page: Home()),
+      RouteEntity(
+        path: AppRoutesNames.COURSE_DETAIL,
+        page: const CourseDetail(),
+      ),
+      RouteEntity(
+        path: AppRoutesNames.LESSON_DETAIL,
+        page: const LessonDetail(),
+      ),
+      RouteEntity(path: AppRoutesNames.BUY_COURSE, page: const BuyCourse()),
+      RouteEntity(path: AppRoutesNames.SETTINGS, page: const Settings()),
+      RouteEntity(
+        path: AppRoutesNames.COURSES_BOUGHT,
+        page: const CoursesBought(),
+      ),
+      RouteEntity(path: AppRoutesNames.AUTHOR_PAGE, page: const AuthorPage()),
+      RouteEntity(path: AppRoutesNames.CHAT_AI_PAGE, page: const ChatAIPage()),
     ];
   }
 

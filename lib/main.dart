@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_ulearning_app/common/routes/routes.dart';
+import 'package:flutter_ulearning_app/common/services/http_until.dart';
 import 'package:flutter_ulearning_app/common/utils/app_styles.dart';
 
 import 'global.dart';
 
 Future<void> main() async {
   await Global.init();
+  //HttpUtil().post("api/login");
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -30,6 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: AppTheme.appThemeData,
       initialRoute: "/",
+      debugShowCheckedModeBanner: false,
       //routes: routesMap,
       onGenerateRoute: AppPages.generateRouteSettings,
       //home: Welcome(), // initial routine "/"

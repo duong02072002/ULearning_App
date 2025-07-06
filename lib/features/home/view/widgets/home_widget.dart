@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_ulearning_app/common/utils/constants.dart';
 import 'package:flutter_ulearning_app/common/widgets/app_shadow.dart';
 import 'package:flutter_ulearning_app/common/widgets/image_widgets.dart';
 import 'package:flutter_ulearning_app/features/home/controller/home_controller.dart';
@@ -96,15 +97,31 @@ class HelloText extends StatelessWidget {
   }
 }
 
-AppBar homeAppBar() {
+AppBar homeAppBar(WidgetRef ref) {
+  var profileState = ref.watch(homeUserProfileProvider);
   return AppBar(
     title: Container(
       margin: EdgeInsets.only(left: 7, right: 7),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          appImage(width: 18, height: 12, imagePath: ImageRes.menu),
-          GestureDetector(child: const AppBoxDecorationImage()),
+          AppImage(width: 18, height: 12, imagePath: ImageRes.menu),
+          profileState.when(
+            data:
+                (value) => GestureDetector(
+                  child: AppBoxDecorationImage(
+                    imagePath:
+                        "${AppConstants.IMAGE_UPLOADS_PATH}${value.avatar!}",
+                  ),
+                ),
+            error:
+                (err, stack) => AppImage(
+                  width: 18,
+                  height: 12,
+                  imagePath: ImageRes.profile,
+                ),
+            loading: () => Container(),
+          ),
         ],
       ),
     ),
@@ -167,24 +184,48 @@ class HomeMenuBar extends StatelessWidget {
   }
 }
 
-class CourceItemGrid extends StatelessWidget {
-  const CourceItemGrid({super.key});
+class CourseItemGrid extends StatelessWidget {
+  final WidgetRef ref;
+
+  const CourseItemGrid({super.key, required this.ref});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GridView.builder(
-        physics: ScrollPhysics(),
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 40,
-          mainAxisSpacing: 40,
-        ),
-        itemCount: 6,
-        itemBuilder: (_, int index) {
-          return appImage();
+    final courseState = ref.watch(homeCourseListProvider);
+
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 0),
+      child: courseState.when(
+        data:
+            (data) => GridView.builder(
+              physics: const ScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
+                childAspectRatio: 1.6,
+              ),
+              itemCount: data?.length,
+              itemBuilder: (_, int index) {
+                return AppBoxDecorationImage(
+                  imagePath:
+                      "${AppConstants.IMAGE_UPLOADS_PATH}${data![index].thumbnail!}",
+                  fit: BoxFit.fitWidth,
+                  courseItem: data[index],
+                  func: () {
+                    Navigator.of(context).pushNamed(
+                      "/course_detail",
+                      arguments: {"id": data[index].id!},
+                    );
+                  },
+                );
+              },
+            ),
+        error: (error, stackTrace) {
+          return const Center(child: Text("Error loading data"));
         },
+        loading: () => const Center(child: Text("loading...")),
       ),
     );
   }

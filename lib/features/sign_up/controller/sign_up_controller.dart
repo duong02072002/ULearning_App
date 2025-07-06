@@ -56,6 +56,8 @@ class SignUpController {
       if (credential.user != null) {
         await credential.user?.sendEmailVerification();
         await credential.user?.updateDisplayName(name);
+        String photoUrl = "default.png";
+        await credential.user?.updatePhotoURL(photoUrl);
         //get server photo url
         //set user photo url
         toastInfo(

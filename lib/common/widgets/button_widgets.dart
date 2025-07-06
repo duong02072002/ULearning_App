@@ -7,30 +7,56 @@ import 'package:flutter_ulearning_app/features/sign_in/view/sign_in.dart';
 import 'package:flutter_ulearning_app/features/sign_in/view/widgets/sign_in_widgets.dart';
 import 'package:flutter_ulearning_app/features/sign_up/view/sign_up.dart';
 
-Widget appButton({
-  double width = 350,
-  double height = 50,
-  String buttonName = "",
-  bool isLogin = true,
-  BuildContext? context,
-  void Function()? func,
-}) {
-  return GestureDetector(
-    onTap: func,
-    child: Container(
-      width: width,
-      height: height,
-      //isLogin true then send primary color else send white color
-      decoration: appBoxShadow(
-        color: isLogin ? AppColors.primaryElement : Colors.white,
-        boxBorder: Border.all(color: AppColors.primaryFourthElementText),
-      ),
-      child: Center(
-        child: Text16Normal(
-          text: buttonName,
-          color: isLogin ? AppColors.primaryBackground : AppColors.primaryText,
+class AppButton extends StatelessWidget {
+  final double width;
+  final double height;
+  final String buttonName;
+  final bool isLogin;
+  final BuildContext? context;
+  final void Function()? func;
+  final bool isDisable; // ✅
+
+  const AppButton({
+    super.key,
+    this.width = 325,
+    this.height = 50,
+    this.buttonName = "",
+    this.isLogin = true,
+    this.context,
+    this.func,
+    this.isDisable = false, // ✅
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: isDisable ? null : func, // ✅ không bấm được nếu disable
+      child: Container(
+        width: width,
+        height: height,
+        decoration: appBoxShadow(
+          color:
+              isDisable
+                  ? Colors
+                      .grey // ✅ màu nền xám khi bị disable
+                  : isLogin
+                  ? AppColors.primaryElement
+                  : Colors.white12,
+          boxBorder: Border.all(color: AppColors.primaryFourthElementText),
+        ),
+        child: Center(
+          child: Text16Normal(
+            text: buttonName,
+            color:
+                isDisable
+                    ? Colors
+                        .white70 // ✅ chữ mờ hơn
+                    : isLogin
+                    ? AppColors.primaryBackground
+                    : AppColors.primaryText,
+          ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

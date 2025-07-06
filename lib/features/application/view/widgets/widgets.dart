@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ulearning_app/common/utils/app_colors.dart';
 import 'package:flutter_ulearning_app/common/utils/image_res.dart';
 import 'package:flutter_ulearning_app/common/widgets/image_widgets.dart';
+import 'package:flutter_ulearning_app/features/chat/view/chat_page.dart';
+import 'package:flutter_ulearning_app/features/courses_bought/view/courses_bought.dart';
 import 'package:flutter_ulearning_app/features/home/view/home.dart';
+import 'package:flutter_ulearning_app/features/profile/view/profile.dart';
+import 'package:flutter_ulearning_app/features/search/view/search.dart';
 
 var bottomTabs = <BottomNavigationBarItem>[
   BottomNavigationBarItem(
@@ -65,16 +69,13 @@ Widget _bottomContainer({
 Widget appScreens({int index = 0}) {
   List<Widget> screens = [
     Home(),
-    Center(
-      child: appImage(imagePath: ImageRes.search, width: 250, height: 250),
-    ),
-    Center(child: appImage(imagePath: ImageRes.play, width: 250, height: 250)),
-    Center(
-      child: appImage(imagePath: ImageRes.message, width: 250, height: 250),
-    ),
-    Center(
-      child: appImage(imagePath: ImageRes.profile, width: 250, height: 250),
-    ),
+    Search(),
+    CoursesBought(),
+    // Center(
+    //   child: AppImage(imagePath: ImageRes.message, width: 250, height: 250),
+    // ),
+    ChatAIPage(),
+    Profile(),
   ];
   return screens[index];
 }

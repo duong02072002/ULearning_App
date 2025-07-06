@@ -55,7 +55,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                         ),
                         SizedBox(height: 50),
                         //User name text box
-                        appTextField(
+                        AppTextField(
                           text: "User name",
                           iconName: ImageRes.user,
                           hintText: "Enter your user name",
@@ -66,7 +66,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                         ),
                         SizedBox(height: 20),
                         //Email text box
-                        appTextField(
+                        AppTextField(
                           text: "Email",
                           iconName: ImageRes.user,
                           hintText: "Enter your email address",
@@ -77,7 +77,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                         ),
                         SizedBox(height: 20),
                         //Password text box
-                        appTextField(
+                        AppTextField(
                           text: "Password",
                           iconName: ImageRes.lock,
                           hintText: "Enter your password",
@@ -89,7 +89,7 @@ class _SignUpState extends ConsumerState<SignUp> {
                         ),
                         SizedBox(height: 20),
                         //Confirm password text box
-                        appTextField(
+                        AppTextField(
                           text: "Confirm Password",
                           iconName: ImageRes.lock,
                           hintText: "Enter your Confirm Password",
@@ -112,7 +112,7 @@ class _SignUpState extends ConsumerState<SignUp> {
 
                         //App register button
                         Center(
-                          child: appButton(
+                          child: AppButton(
                             buttonName: "Register",
                             isLogin: true,
                             context: context,

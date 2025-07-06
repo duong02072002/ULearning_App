@@ -34,8 +34,8 @@ class _SignInState extends ConsumerState<SignIn> {
   Widget build(BuildContext context) {
     final signInProvider = ref.watch(signInNotifierProvider);
     final loader = ref.watch(appLoaderProvider);
-    print(signInProvider.email);
-    print(signInProvider.password);
+    // print(signInProvider.email);
+    // print(signInProvider.password);
     return Container(
       color: Colors.grey,
       child: SafeArea(
@@ -58,7 +58,7 @@ class _SignInState extends ConsumerState<SignIn> {
                         ),
                         SizedBox(height: 50),
                         //Email text box
-                        appTextField(
+                        AppTextField(
                           controller: _controller.emailController,
                           text: "Email",
                           iconName: ImageRes.user,
@@ -70,7 +70,7 @@ class _SignInState extends ConsumerState<SignIn> {
                         ),
                         SizedBox(height: 20),
                         //Password text box
-                        appTextField(
+                        AppTextField(
                           controller: _controller.passwordController,
                           text: "Password",
                           iconName: ImageRes.lock,
@@ -90,7 +90,7 @@ class _SignInState extends ConsumerState<SignIn> {
                         SizedBox(height: 100),
                         //App login button
                         Center(
-                          child: appButton(
+                          child: AppButton(
                             buttonName: "Login",
                             func: () => _controller.handleSignIn(ref),
                           ),
@@ -98,7 +98,7 @@ class _SignInState extends ConsumerState<SignIn> {
                         SizedBox(height: 20),
                         //App register button
                         Center(
-                          child: appButton(
+                          child: AppButton(
                             buttonName: "Register",
                             isLogin: false,
                             context: context,
