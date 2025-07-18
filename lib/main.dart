@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navKey,
+
       title: 'Flutter Demo',
       theme: AppTheme.appThemeData,
       initialRoute: "/",

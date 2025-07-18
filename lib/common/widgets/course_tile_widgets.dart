@@ -96,6 +96,7 @@ class CourseTileWidgets extends StatelessWidget {
     );
   }
 }
+
 /*
 Container(
             width: 325.w,

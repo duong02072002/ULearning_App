@@ -1,92 +1,94 @@
-import 'package:flutter/cupertino.dart';
+// lib/features/search/view/search.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_ulearning_app/common/utils/image_res.dart';
+import 'package:flutter_ulearning_app/common/models/search_filter.dart';
 import 'package:flutter_ulearning_app/common/widgets/app_bar.dart';
+import 'package:flutter_ulearning_app/common/widgets/app_textfields.dart';
+import 'package:flutter_ulearning_app/common/widgets/course_tile_widgets.dart';
+import 'package:flutter_ulearning_app/common/widgets/filter_sheet.dart';
 import 'package:flutter_ulearning_app/common/widgets/search_widgets.dart';
-import 'package:flutter_ulearning_app/features/search/widget/courses_search_widgets.dart';
-
 import '../controller/courses_search_controller.dart';
 
-class Search extends ConsumerWidget {
-  const Search({super.key});
+class SearchPage extends ConsumerStatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final searchProvider = ref.watch(coursesSearchControllerProvider);
+  ConsumerState<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends ConsumerState<SearchPage> {
+  SearchFilter _filter = SearchFilter(); // ✅ thêm dòng này
+  /// Mở modal filter
+  void _openFilter() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      builder:
+          (_) => FilterSheet(
+            search: _filter.search, // ✅ truyền search hiện tại
+            onApply: (newFilter) {
+              _filter = newFilter.copyWith(search: _filter.search);
+              ref
+                  .read(coursesSearchControllerProvider.notifier)
+                  .applyFilter(_filter);
+            },
+          ),
+    );
+  }
+
+  /// Tự động refresh khi quay lại trang
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    Future.microtask(() {
+      ref.read(coursesSearchControllerProvider.notifier).reset();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final async = ref.watch(coursesSearchControllerProvider);
+
     return Scaffold(
       appBar: buildGlobalAppbar(title: "Search Courses"),
-      body: RefreshIndicator(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 5),
-                // ✅ Ảnh bo góc, đổ bóng nhẹ
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(28),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                      image: const DecorationImage(
-                        image: AssetImage(ImageRes.banner2),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-                AppSearchBar(
-                  searchFunc: (search) {
-                    ref
-                        .watch(coursesSearchControllerProvider.notifier)
-                        .searchData(search!);
-                  },
-                ),
-                SizedBox(height: 10),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: switch (searchProvider) {
-                    AsyncData(:final value) =>
-                      value!.isEmpty
-                          ? Center(child: const CircularProgressIndicator())
-                          : CoursesSearchWidgets(value: value),
-                    AsyncError(:final error) => Text('Error $error'),
-                    _ => const Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.red,
-                          strokeWidth: 2,
-                        ),
-                      ),
-                    ),
-                  },
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Search bar với filter button
+            AppSearchBar(
+              func: _openFilter,
+              searchFunc: (value) {
+                _filter = _filter.copyWith(
+                  search: value,
+                ); // ✅ Giữ lại các filter khác
+                ref
+                    .read(coursesSearchControllerProvider.notifier)
+                    .applyFilter(_filter);
+              },
             ),
-          ),
+
+            const SizedBox(height: 16),
+
+            // Kết quả tìm kiếm
+            Expanded(
+              child: async.when(
+                data: (resp) {
+                  final list = resp?.data.items ?? [];
+                  if (list.isEmpty) {
+                    return const Center(child: Text('No courses found'));
+                  }
+                  return CourseTileWidgets(value: list);
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, _) => Center(child: Text('Error: $e')),
+              ),
+            ),
+          ],
         ),
-        onRefresh: () {
-          return ref
-              .watch(coursesSearchControllerProvider.notifier)
-              .reloadSearchData();
-        },
       ),
     );
   }

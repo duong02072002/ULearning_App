@@ -69,7 +69,7 @@ Widget _bottomContainer({
 Widget appScreens({int index = 0}) {
   List<Widget> screens = [
     Home(),
-    Search(),
+    SearchPage(),
     CoursesBought(),
     // Center(
     //   child: AppImage(imagePath: ImageRes.message, width: 250, height: 250),

@@ -14,6 +14,52 @@ class SearchRequestEntity {
   Map<String, dynamic> toJson() => {"search": search};
 }
 
+class CourseSearchResponse {
+  final int code;
+  final String msg;
+  final Pagination data;
+
+  CourseSearchResponse({
+    required this.code,
+    required this.msg,
+    required this.data,
+  });
+
+  factory CourseSearchResponse.fromJson(Map<String, dynamic> json) {
+    return CourseSearchResponse(
+      code: json['code'],
+      msg: json['msg'],
+      data: Pagination.fromJson(json['data']),
+    );
+  }
+}
+
+class Pagination {
+  final int currentPage;
+  final int lastPage;
+  final int perPage;
+  final int total;
+  final List<CourseItem> items;
+
+  Pagination({
+    required this.currentPage,
+    required this.lastPage,
+    required this.perPage,
+    required this.total,
+    required this.items,
+  });
+
+  factory Pagination.fromJson(Map<String, dynamic> json) {
+    return Pagination(
+      currentPage: json['current_page'],
+      lastPage: json['last_page'],
+      perPage: json['per_page'],
+      total: json['total'],
+      items: (json['data'] as List).map((e) => CourseItem.fromJson(e)).toList(),
+    );
+  }
+}
+
 class CourseListResponseEntity {
   int? code;
   String? msg;
