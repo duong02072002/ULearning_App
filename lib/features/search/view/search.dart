@@ -70,7 +70,6 @@ class _SearchPageState extends ConsumerState<SearchPage> {
                     .applyFilter(_filter);
               },
             ),
-
             const SizedBox(height: 16),
 
             // Kết quả tìm kiếm
